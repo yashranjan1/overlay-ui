@@ -1,0 +1,15 @@
+{
+  "name": "overlayed",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "tailwindcss": "^4.1.10"
+  }
+}

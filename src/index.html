@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="dark">
+
+<head>
+    <title>Testing page</title>
+    <link rel="stylesheet" href="styles/output.css" />
+</head>
+
+<body>
+    <div class="flex flex-col min-h-screen w-screen dark:bg-black dark:text-gray-50">
+        <nav class="flex items-center mx-56 py-5">
+            <h1 class="text-xl">Overlay UI</h1>
+        </nav>
+        <div class="flex-1 flex flex-col justify-center items-center mb-20 gap-5">
+            <h1 class="text-5xl">Placeholder</h1>
+            <button id="toast-trigger" class="bg-black rounded-md py-1.5 px-3 ring-1 ring-white/30">Test</button>
+        </div>
+    </div>
+    <div id="toast-container"></div>
+    <script type="module" src="js/tests.js"></script>
+</body>
+
+</html>
