@@ -13,6 +13,14 @@ const config: Config = {
                     '0%': { transform: 'translateY(-20px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
                 },
+                'slide-up-exit': {
+                    '0%': { transform: 'translateY(0)', opacity: '1' },
+                    '100%': { transform: 'translateY(-20px)', opacity: '0' },
+                },
+                'slide-down-exit': {
+                    '0%': { transform: 'translateY(0)', opacity: '1' },
+                    '100%': { transform: 'translateY(20px)', opacity: '0' },
+                },
                 'fade-out': {
                     '0%': { opacity: '1', transform: 'translateY(0)' },
                     '100%': { opacity: '0', transform: 'translateY(-10px)' },
@@ -20,10 +28,10 @@ const config: Config = {
             },
             animation: {
                 'slide-up-enter': 'slide-up-enter 150ms ease-out forwards',
-                'slide-down-exit': 'slide-down-enter 150ms ease-in backwards',
-                'slide-up-exit': 'slide-up-enter 150ms ease-out backwards',
                 'slide-down-enter': 'slide-down-enter 150ms ease-in forwards',
-                'fade-out': 'fadeOut 10ms ease-in forwards',
+                'slide-up-exit': 'slide-up-exit 150ms ease-in forwards',
+                'slide-down-exit': 'slide-down-exit 150ms ease-in forwards',
+                'fade-out': 'fade-out 10ms ease-in forwards',
             }
         },
     },
