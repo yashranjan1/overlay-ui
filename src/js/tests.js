@@ -1,15 +1,21 @@
 // src/ts/components/toast.ts
 class toast {
   _container;
-  _max;
+  _maxToast;
   _styles;
   _svg;
   _verticalPos;
+  _height;
+  _gap;
   constructor(containerID, verticalPos, horizontalPos) {
     this._container = document.getElementById(containerID);
-    this._max = 3;
-    this._verticalPos = verticalPos;
     this._container?.classList.add(...this._setContainerStyle(verticalPos, horizontalPos));
+    this._container?.addEventListener("mouseenter", () => this._removeStackTransformations());
+    this._container?.addEventListener("mouseleave", () => this._applyStackTransformations());
+    this._maxToast = 3;
+    this._height = 72;
+    this._gap = 12;
+    this._verticalPos = verticalPos;
     this._styles = `text-gray-50 ring-1 bg-black ring-gray-300/20 pl-3 
         pr-10 py-3 rounded-lg gap-3 flex justify-content-center shadow-lg 
         text-white w-[356px] h-[72px] transform absolute z-100
@@ -22,9 +28,22 @@ class toast {
     };
   }
   spawn(type, heading, message) {
-    const toast2 = document.createElement("div");
-    toast2.className = this._styles;
-    toast2.innerHTML = `
+    if (this._container == null) {
+      console.error("No container found! Check for typos");
+      return;
+    }
+    const newToast = this._createToast(type, heading, message);
+    if (this._container?.children.length === this._maxToast)
+      this._container?.lastChild?.remove();
+    this._container?.prepend(newToast);
+    this._applyStackTransformations();
+    this._removeEnterAnimation(newToast);
+    this._removeToastAfterTimeout(newToast);
+  }
+  _createToast(type, heading, message) {
+    const newToast = document.createElement("div");
+    newToast.className = this._styles;
+    newToast.innerHTML = `
             <div class="flex items-center gap-4">
                 ${this._svg[type]}
                 <div class="flex flex-col gap-0.5">
@@ -33,33 +52,30 @@ class toast {
                 </div>
             </div>
         `;
-    if (this._container == null) {
-      console.error("No container found! Check for typos");
-    }
-    if (this._container?.children.length === this._max)
-      this._container?.lastChild?.remove();
-    this._container?.prepend(toast2);
-    this._handleStackTransformations();
-    toast2.addEventListener("animationend", () => {
-      console.log(this._verticalPos);
-      if (this._verticalPos == "top") {
-        toast2.classList.remove("animate-slide-down-enter");
-      } else if (this._verticalPos == "bottom")
-        toast2.classList.remove("animate-slide-up-enter");
-    });
-    this._removeToastAfterTimeout(toast2);
+    return newToast;
   }
-  _handleStackTransformations() {
+  _applyStackTransformations() {
+    this._container.style.maxHeight = `${this._height}px`;
     const children = Array.from(this._container.children);
     children.forEach((toast2, i) => {
       const offset = i * 10;
       const scale = 1 - i * 0.05;
-      toast2.classList.add("transition-transform", "ease-in-out", "duration");
+      if (!toast2.classList.contains("absolute"))
+        toast2.classList.add("absolute");
       if (this._verticalPos == "top")
         toast2.style.transform = `translateY(${offset}px) scale(${scale})`;
       else if (this._verticalPos == "bottom")
         toast2.style.transform = `translateY(-${offset}px) scale(${scale})`;
       toast2.style.zIndex = `${100 - i}`;
+    });
+  }
+  _removeStackTransformations() {
+    const children = Array.from(this._container.children);
+    const toastVertLen = this._height + this._gap;
+    this._container.style.maxHeight = `${children.length * toastVertLen}px`;
+    children.forEach((toast2, i) => {
+      const offset = toastVertLen * i;
+      toast2.style.transform = `translateY(${offset}px) scale(1)`;
     });
   }
   _removeToastAfterTimeout(toast2) {
@@ -72,10 +88,20 @@ class toast {
       toast2.addEventListener("animationend", () => {
         toast2.remove();
       });
-    }, 3000);
+    }, 9000);
+  }
+  _removeEnterAnimation(toast2) {
+    toast2.classList.add("transition-transform", "ease-in-out", "duration");
+    toast2.addEventListener("animationend", () => {
+      if (this._verticalPos == "top") {
+        toast2.classList.remove("animate-slide-down-enter");
+      } else if (this._verticalPos == "bottom")
+        toast2.classList.remove("animate-slide-up-enter");
+    });
   }
   _setContainerStyle(vert, hor) {
-    const defaultStyles = "fixed z-100 bottom-4 w-[356px] h-[72px]";
+    const defaultStyles = "fixed z-100 bottom-4 w-[356px] flex flex-col gap-3";
+    this._container.style.maxHeight = `${this._height}px`;
     let vertStyle;
     let horStyle;
     if (vert == "top") {
