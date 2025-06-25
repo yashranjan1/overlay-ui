@@ -16,10 +16,9 @@ class toast {
     this._height = 72;
     this._gap = 12;
     this._verticalPos = verticalPos;
-    this._styles = `text-gray-50 ring-1 bg-black ring-gray-300/20 pl-3 
-        pr-10 py-3 rounded-lg flex justify-content-center shadow-lg 
-        text-white w-[356px] h-[72px] transform absolute z-100
-        ${verticalPos == "top" ? "animate-slide-down-enter" : "animate-slide-up-enter bottom-0"}`;
+    this._styles = `text-black dark:text-white ring-1 bg-white dark:bg-black ring-gray-300/20 pl-3 
+        pr-10 py-3 rounded-lg flex justify-content-center drop-shadow-lg w-[356px] h-[72px] transform 
+        absolute z-100 ${verticalPos == "top" ? "animate-slide-down-enter" : "animate-slide-up-enter bottom-0"}`;
     this._svg = {
       error: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert-icon lucide-circle-alert text-red-400"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
       success: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-green-400"><path d="M20 6 9 17l-5-5"/></svg>`,
