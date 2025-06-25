@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let num = 1
 
     button?.addEventListener("click", () => {
-        const toaster = new toast("toast-container", "top", "left")
+        const toaster = new toast("toast-container", "bottom", "right")
         toaster.spawn("error", `This is a toast no ${num++}!`, "Hello cro")
     })
 })

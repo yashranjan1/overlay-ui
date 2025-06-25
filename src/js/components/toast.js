@@ -17,9 +17,9 @@ class toast {
     this._gap = 12;
     this._verticalPos = verticalPos;
     this._styles = `text-gray-50 ring-1 bg-black ring-gray-300/20 pl-3 
-        pr-10 py-3 rounded-lg gap-3 flex justify-content-center shadow-lg 
+        pr-10 py-3 rounded-lg flex justify-content-center shadow-lg 
         text-white w-[356px] h-[72px] transform absolute z-100
-        ${verticalPos == "top" ? "animate-slide-down-enter" : "animate-slide-up-enter"}`;
+        ${verticalPos == "top" ? "animate-slide-down-enter" : "animate-slide-up-enter bottom-0"}`;
     this._svg = {
       error: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert-icon lucide-circle-alert text-red-400"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
       success: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-green-400"><path d="M20 6 9 17l-5-5"/></svg>`,
@@ -55,13 +55,11 @@ class toast {
     return newToast;
   }
   _applyStackTransformations() {
-    this._container.style.maxHeight = `${this._height}px`;
     const children = Array.from(this._container.children);
+    this._container.style.height = `${this._height}px`;
     children.forEach((toast2, i) => {
       const offset = i * 10;
       const scale = 1 - i * 0.05;
-      if (!toast2.classList.contains("absolute"))
-        toast2.classList.add("absolute");
       if (this._verticalPos == "top")
         toast2.style.transform = `translateY(${offset}px) scale(${scale})`;
       else if (this._verticalPos == "bottom")
@@ -72,10 +70,13 @@ class toast {
   _removeStackTransformations() {
     const children = Array.from(this._container.children);
     const toastVertLen = this._height + this._gap;
-    this._container.style.maxHeight = `${children.length * toastVertLen}px`;
+    this._container.style.height = `${toastVertLen * children.length}px`;
     children.forEach((toast2, i) => {
       const offset = toastVertLen * i;
-      toast2.style.transform = `translateY(${offset}px) scale(1)`;
+      if (this._verticalPos == "top")
+        toast2.style.transform = `translateY(${offset}px) scale(1)`;
+      else if (this._verticalPos == "bottom")
+        toast2.style.transform = `translateY(-${offset}px) scale(1)`;
     });
   }
   _removeToastAfterTimeout(toast2) {
@@ -100,8 +101,8 @@ class toast {
     });
   }
   _setContainerStyle(vert, hor) {
-    const defaultStyles = "fixed z-100 bottom-4 w-[356px] flex flex-col gap-3";
-    this._container.style.maxHeight = `${this._height}px`;
+    const defaultStyles = "fixed z-100 bottom-4 w-[356px] flex flex-col overflow-visible";
+    this._container.style.height = `${this._height}px`;
     let vertStyle;
     let horStyle;
     if (vert == "top") {
