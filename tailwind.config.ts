@@ -25,6 +25,14 @@ const config: Config = {
                     '0%': { opacity: '1', transform: 'translateY(0)' },
                     '100%': { opacity: '0', transform: 'translateY(-10px)' },
                 },
+                'opacity-enter': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                'opacity-exit': {
+                    '0%': { opacity: '1' },
+                    '100%': { opacity: '0' },
+                }
             },
             animation: {
                 'slide-up-enter': 'slide-up-enter 150ms ease-out forwards',
@@ -32,8 +40,13 @@ const config: Config = {
                 'slide-up-exit': 'slide-up-exit 150ms ease-in forwards',
                 'slide-down-exit': 'slide-down-exit 150ms ease-in forwards',
                 'fade-out': 'fade-out 10ms ease-in forwards',
+                'opacity-enter': 'opacity-enter 100ms ease-in forwards',
+                'opacity-exit': 'opacity-exit 100ms ease-out forwards'
             }
         },
+        fontFamily: {
+            'sans': ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji']
+        }
     },
     plugins: [],
 };

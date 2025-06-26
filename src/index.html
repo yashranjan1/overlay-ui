@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="">
+<html class="dark">
 
 <head>
     <title>Testing page</title>
@@ -7,17 +7,46 @@
 </head>
 
 <body class="overflow-x-hidden">
-    <div class="flex flex-col min-h-screen w-screen bg-gray-400 dark:bg-black dark:text-gray-50 h-[110vh]">
+    <div class="flex flex-col min-h-screen w-screen bg-white dark:bg-black dark:text-gray-50">
         <nav class="flex items-center mx-56 py-5">
             <h1 class="text-xl">Overlay UI</h1>
         </nav>
         <div class="flex-1 flex flex-col justify-center items-center mb-20 gap-5">
-            <h1 class="text-5xl">Placeholder</h1>
+            <h1 class="text-5xl">Tests</h1>
             <div class="flex gap-5">
                 <button id="toast-trigger"
                     class="bg-black dark:bg-white text-white dark:text-black rounded-md py-1.5 px-3 ring-1 ring-white/30">Test
-                    Toast</button>
-                <alert-dialog-action>Cancel</alert-dialog-action>
+                    Toast
+                </button>
+                <!-- PERF: alert setup -->
+                <alert-dialog>
+                    <alert-dialog-trigger>
+                        <button
+                            class="bg-black dark:bg-white text-white dark:text-black rounded-md py-1.5 px-3 ring-1 ring-white/30">
+                            Dialog
+                        </button>
+                    </alert-dialog-trigger>
+                    <alert-dialog-content hidden>
+                        <alert-dialog-header>
+                            <alert-dialog-title>
+                                Are you absolutely sure?
+                            </alert-dialog-title>
+                            <alert-dialog-description>
+                                This action cannot be undone. This will permanently delete your account and remove your
+                                data
+                                from our servers.
+                            </alert-dialog-description>
+                        </alert-dialog-header>
+                        <alert-dialog-footer>
+                            <alert-dialog-cancel>
+                                Cancel
+                            </alert-dialog-cancel>
+                            <alert-dialog-action>
+                                Continue
+                            </alert-dialog-action>
+                        </alert-dialog-footer>
+                    </alert-dialog-content>
+                </alert-dialog>
                 <button id="theme-trigger"
                     class="bg-black dark:bg-white text-white dark:text-black rounded-md py-1.5 px-3 ring-1 ring-white/30">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -37,6 +66,7 @@
             </div>
         </div>
     </div>
+    <!-- PERF: toast setup -->
     <div id="toast-container"></div>
     <script type="module" src="js/tests.js"></script>
     <script type="module" src="js/components/alert-dialog.js"></script>
