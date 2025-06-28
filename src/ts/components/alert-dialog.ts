@@ -99,8 +99,8 @@ class AlertDialog extends HTMLElement {
     _openDialog() {
         const cover = document.createElement("div")
         this._cover = cover
-        this._cover.className = `z-100 fixed h-screen w-screen bg-black/20
-        flex justify-center items-center`
+        this._cover.className = `z-100 fixed h-screen w-screen bg-black/20 
+        dark:bg-black/50 flex justify-center items-center`
         if (this._content) {
             document.body.prepend(this._cover)
             let content = this._content.cloneNode(true) as HTMLElement
