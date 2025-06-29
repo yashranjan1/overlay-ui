@@ -1,0 +1,7 @@
+{
+    "tailwindConfig": "https://raw.githubusercontent.com/yashranjan1/overlay-ui/refs/heads/master/tailwind.config.ts",
+    "components": {
+        "toast": "https://raw.githubusercontent.com/yashranjan1/overlay-ui/refs/heads/master/src/js/components/toast.js",
+        "alert-dialog": "https://raw.githubusercontent.com/yashranjan1/overlay-ui/refs/heads/master/src/js/components/alert-dialog.js"
+    }
+}

@@ -1,5 +1,6 @@
 import { Command } from "commander";
-import setup from "./commands/setup";
+import init from "./commands/init";
+import add from "./commands/add";
 
 const program = new Command();
 
@@ -9,10 +10,18 @@ program
     .version('0.1.0')
 
 program
-    .command('setup')
+    .command('init')
     .description('Setup files for Overlay UI')
     .action(() => {
-        setup();
+        init();
+    })
+
+program
+    .command('add')
+    .description('Setup files for Overlay UI')
+    .argument('<component>', "The component you would like to add")
+    .action((component: string) => {
+        add(component)
     })
 
 program.parse();

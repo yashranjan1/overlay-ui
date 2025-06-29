@@ -9,12 +9,16 @@ import {
     text,
 } from '@clack/prompts';
 import fs from "fs"
+import { mkdir } from 'fs/promises';
 import gradient from 'gradient-string';
-import fetch from 'node-fetch';
 import { downloadFile } from '../utilites/fileDownloader';
+import { writeFile } from 'fs/promises';
+import path from 'path';
+import * as links from "../utilites/links.json"
+import DownloadFailedError from '../types/DownloadFailedError';
 
 
-async function setup() {
+async function init() {
 
     const logo = gradient([
         {
@@ -45,48 +49,51 @@ async function setup() {
         return process.exit(0);
     }
 
-    if (!fs.existsSync(dirName)) {
+    if (!fs.existsSync(dirName) || !fs.statSync(dirName).isDirectory()) {
         log.error("Folder does not exist, please enter a valid folder")
         return process.exit(1);
-    }
-
-    let tailwindExist = false
-    let overwriteConfig: boolean | symbol = false
-
-    if (fs.existsSync('./tailwind.config.ts') || fs.existsSync('./tailwind.config.js')) {
-        tailwindExist = true
-
-        log.info("Tailwind config detected")
-
-        overwriteConfig = await select({
-            message: 'Would you like me to overwrite your tailwind config? This will completely delete your existing config',
-            options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' },
-            ],
-        });
-
-        if (isCancel(overwriteConfig)) {
-            cancel('Operation cancelled');
-            return process.exit(0);
-        }
-
-        if (!overwriteConfig) {
-            log.warn("You have chosen not to overwrite your config, please make sure you take a look at the tailwind section of the docs to add the necessary config")
-        }
     }
 
 
     const s = spinner();
 
-    if (!tailwindExist || overwriteConfig) {
-        s.start("Making Tailwind Config")
-        await downloadFile("https://raw.githubusercontent.com/yashranjan1/overlay-ui/refs/heads/master/tailwind.config.ts", "./tailwind.config.ts")
-
+    s.start("Starting")
+    s.message("Setting up tailwind")
+    try {
+        await downloadFile(links.tailwindConfig, "./tailwind.config.ts")
+    }
+    catch (error) {
+        if (error instanceof DownloadFailedError) {
+            log.error(`Download failed: ${error.message}`)
+            s.stop("Exiting")
+            outro("Setup failed")
+            return
+        }
+        log.error(error as string)
+        s.stop("An error occured")
+        outro("Setup failed")
+        return
     }
 
+    s.message("Making config for components")
 
-    s.stop('Installed via npm');
+    const basePath = path.join(dirName, "components")
+
+    if (fs.existsSync(basePath)) {
+        log.info(`Using exist folder at ${basePath}\n`)
+    }
+    else {
+        await mkdir(basePath)
+    }
+
+    const config = {
+        componentsBaseURL: basePath,
+        components: {}
+    }
+
+    await writeFile("./overlay-components.json", JSON.stringify(config))
+
+    s.stop('Setup complete');
 
     outro("You're all set!");
 
@@ -102,5 +109,6 @@ const logoPrompt = `
                                                                            
                                                                            `
 
-export default setup;
+
+export default init;
 
