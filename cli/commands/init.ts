@@ -80,7 +80,7 @@ async function init() {
     const basePath = path.join(dirName, "components")
 
     if (fs.existsSync(basePath)) {
-        log.info(`Using components exist folder at ${dirName}\n`)
+        log.info(`Using existing components folder at ${dirName}\n`)
     }
     else {
         await mkdir(basePath)

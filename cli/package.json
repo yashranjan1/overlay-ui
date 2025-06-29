@@ -1,10 +1,15 @@
 {
-  "name": "cli",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
+  "name": "overlay-ui",
+  "module": "./dist/index.ts",
+  "version": "1.0.0",
+  "bin": {
+    "overlay": "./dist/index.js"
+  },
   "devDependencies": {
     "@types/bun": "latest"
+  },
+  "scripts": {
+    "build": "bun build ./index.ts --outdir ./dist --target=node"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -16,5 +21,12 @@
     "gradient-string": "^3.0.0",
     "node-fetch": "^3.3.2",
     "picocolors": "^1.1.1"
-  }
+  },
+  "author": "Yash Ranjan",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+      "dist/",
+      "README.md"
+  ]
 }
